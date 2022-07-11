@@ -11,21 +11,19 @@ const App = () => {
 
     const getMovies = async () => {
       const movies: any = [];
-
       const res = await fetch('../movies.json')
       const data = await res.json();
 
       data.forEach((movie: any) => {
         movies.push(
-        <div>
-          <h3>{movie.name}</h3>
-          <img src={movie.image}/>
-          <br/>
-          <br/>
-        </div>
+          <div>
+            <h3>{movie.name}</h3>
+            <img src={movie.image}/>
+            <br/>
+            <br/>
+          </div>
         )
       })
-
       setMovies(movies)
     }
 
