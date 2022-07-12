@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import './stylesheets/styles.css';
-
+import Login from './Components/Login.jsx';
+import SignUp from './Components/SignUp.jsx';
+import Display from './Components/Display';
 
 const App = () => {
-
   const [allMovies, setMovies] = useState([]);
 
   useEffect(() => {
@@ -36,9 +37,10 @@ const App = () => {
   return (
     <div>
       <h1>Movie ELO</h1>
-      {allMovies}
+      {/* {allMovies} */}
+      {Display()}
     </div>
   );
-}
+ }
 
 export default App;
