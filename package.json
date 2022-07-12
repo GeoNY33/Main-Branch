@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/GeoNY33/Main-Branch#readme",
   "dependencies": {
+    "concurrently": "^7.2.2",
     "dom-parser": "^0.1.6",
     "express": "^4.18.1",
     "pg": "^8.7.3",
