@@ -19,6 +19,9 @@ const controllers = {
         .then(data => {
           console.log(data);
         })
+        .catch(err => {
+          return next(err);
+        })
     }
     res.locals.movies = movies;
     return next();
@@ -33,9 +36,45 @@ const controllers = {
           res.locals.userinfo = data.rows[0]
           return next();
         })
+        .catch(err => {
+          return next(err);
+        })
     })
   },
+
+  verifyUser: async (req, res, next) => {
+    console.log('verifying user')
+    const query = 'SELECT * FROM movie_app.users WHERE username = $1';
+    const values = [req.body.username];
+    const data = await db.query(query, values);
+    res.locals.verifyUser = data.rows[0].password
+
+    bcrypt.compare(req.body.password, data.rows[0].password, function(err, result) {
+      console.log('res after bcompare', result)
+      if (result) {
+        res.locals.username = req.body.username;
+        return next();
+      } else {
+        res.status(200).send('user not found');
+      }
+    });
+  },
   
+  setCookie: (req, res, next) => {
+    res.cookie('currentUser', res.locals.username, {
+      secure: true,
+      httpOnly: true
+    })
+    const query = 'INSERT INTO movie_app.sessionInfo (userId, timeEnd, cookieValue) VALUES ($1, $2, $3) RETURNING *';
+    const values = [res.locals.username, new Date()];
+    db.query(query, values)
+      .then(data => {
+        console.log('session info: ', data)
+        return next();
+      })
+    return next();
+  },
+
 
   getRandomMovie: (req, res, next) => {
     const values = [Math.floor(Math.random() * 182)];
@@ -45,15 +84,38 @@ const controllers = {
         res.locals.movie = data.rows[0];
         return next();
       })
+      .catch(err => {
+        return next(err);
+      })
   },
 
-  
+
   getAllMovies: (req, res, next) => {
+    console.log('cookies', req.cookies.currentUser)
     const query = 'SELECT * FROM movie_app.movies';
     db.query(query)
       .then(data => {
         res.locals.movies = data.rows;
         return next();
+      })
+      .catch(err => {
+        return next(err);
+      })
+  },
+
+
+  updateElo: (req, res, next) => {
+    const { elo, movieId } = req.body;
+    const values = [elo, movieId];
+    const query = 'UPDATE movie_app.movies SET elo = $1 WHERE _id = $2 RETURNING *';
+    db.query(query, values)
+      .then(data => {
+        console.log(data)
+        res.locals.movie = data.rows[0];
+        return next();
+      })
+      .catch(err => {
+        return next(err);
       })
   }
 };

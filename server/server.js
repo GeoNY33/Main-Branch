@@ -1,6 +1,7 @@
 const path = require('path');
 const express = require('express');
 const app = express();
+const cookieParser = require('cookie-parser');
 
 const apiRouter = require('./router/api');
 
@@ -9,6 +10,7 @@ const PORT = 3000;
 //handle parsing request body
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 //uses /dist for static files in webpack production mode
 console.log(process.env.NODE_ENV)
