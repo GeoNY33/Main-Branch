@@ -16,10 +16,13 @@ router.get('/getRandomMovie', controllers.getRandomMovie, (req, res) => {
 //submit change in ELO on selection
 
 //fetch all movies to display ranking
+router.get('/getAllMovies', controllers.getAllMovies, (req, res) => {
+  res.status(200).json(res.locals.movies);
+})
 
 //create new user
 router.post('/newUser', controllers.newUser, (req, res) => {
-  res.status(200).json(res.locals.userinfo)
+  res.status(200).json(res.locals.userinfo);
 })
 
 //verify existing user
