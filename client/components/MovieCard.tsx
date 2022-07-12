@@ -1,21 +1,31 @@
-import React from 'react';
-import { isPropertySignature } from 'typescript';
+import React, {useState} from 'react';
+import { isPropertySignature, setConstantValue } from 'typescript';
 
 type MovieCardProps = {
-  side : string
+  side: string,
+  genre: string,
+  image: string,
+  title: string,
+  elo: number,
+  id: number,  
+  setMovie: Function
 };
 
 const MovieCard = (props : MovieCardProps) => {
-  const clickHelper = (event: React.MouseEvent<HTMLImageElement>) =>{
-    console.log('image clicked')
-  }  
-  
+
+  const imageClickHelper = (event: React.MouseEvent<HTMLImageElement>) =>{    
+    const newValue = Object.assign({}, props);
+    newValue.elo = props.elo + 1
+    delete newValue.setMovie 
+    props.setMovie(newValue);
+  }; 
+
   return (
     <div id={props.side}>
-      {/*props.title*/}
-      <img className="movieImg" src='https://creativereview.imgix.net/content/uploads/2019/12/midsommar_ver2_xxlg.jpg?auto=compress,format&q=60&w=1013&h=' onClick ={clickHelper}></img>
-      {/*props.description*/}
-      {/*props.score*/}
+      <button className="exitBtn" id={`btn${props.side}`} >X</button>
+      {props.title}
+      <img className="movieImg" src={props.image} onClick={imageClickHelper}></img>
+      {props.elo}
     </div>
   );
 };
