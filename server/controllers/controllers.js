@@ -3,13 +3,8 @@ const db = require('../models/db');
 const fs = require('fs');
 const path = require('path');
 const bcrypt = require('bcrypt');
-const { AsyncDependenciesBlock } = require('webpack');
-const { brotliDecompress } = require('zlib');
-const { query } = require('express');
-
 
 const controllers = {
-  // never use this again
   insertAllMovies: (req, res, next) => {
     const moviePath = path.join(__dirname, '../../movies.json')
     const movies = JSON.parse(fs.readFileSync(moviePath, 'utf-8'));
@@ -30,8 +25,9 @@ const controllers = {
 
   newUser: (req, res, next) => {
     bcrypt.hash(req.body.password, 10, (err, hash) => {
-      const query = `INSERT INTO movie_app.users (username, password) VALUES ('${req.body.username}', '${hash}') RETURNING *`;
-      db.query(query)
+      const values = [req.body.username, hash]
+      const query = `INSERT INTO movie_app.users (username, password) VALUES ($1, $2) RETURNING *`;
+      db.query(query, values)
         .then(data => {
           res.locals.userinfo = data.rows[0]
           return next();
@@ -50,7 +46,6 @@ const controllers = {
     res.locals.verifyUser = data.rows[0].password
 
     bcrypt.compare(req.body.password, data.rows[0].password, function(err, result) {
-      console.log('res after bcompare', result)
       if (result) {
         res.locals.username = req.body.username;
         return next();
@@ -66,13 +61,12 @@ const controllers = {
       httpOnly: true
     })
     const query = 'INSERT INTO movie_app.sessionInfo (userId, timeEnd, cookieValue) VALUES ($1, $2, $3) RETURNING *';
-    const values = [res.locals.username, new Date()];
+    const values = [res.locals.username, new Date(), res.locals.username];
     db.query(query, values)
       .then(data => {
         console.log('session info: ', data)
         return next();
       })
-    return next();
   },
 
 
