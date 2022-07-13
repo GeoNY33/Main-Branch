@@ -7,7 +7,6 @@ const MainPageContainer = (props:any) => {
     return (
       <div id="MainPage">
         <MovieCardsContainer/>
-        <DropDownContainer/>
       </div>
     );
 };

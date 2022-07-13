@@ -75,9 +75,13 @@ const MovieCardsContainer =  (props:any) => {
 
   useEffect(() => {
     const updateNextMovie = async () => {
-    let nextMovHolder:Promise<movieInfo> = getMovie();
-    props.nextMovie = nextMovHolder;
+    let nextMovHolder:movieInfo = await getMovie();
+    if (nextMovHolder._id === oldMovie._id || nextMovHolder._id === newMovie._id){
+      nextMovHolder = await getMovie();
+    }
+    setNextMovie(await nextMovHolder)
   };
+    updateNextMovie()
   }, [newMovie]);
 
   // NOTE: possibly try to load image behind image on left 
@@ -99,7 +103,7 @@ const MovieCardsContainer =  (props:any) => {
     let newLoseElo = loserInfo.elo + K*(eloLose2 - eloLose1);
     // Update winner info, add new movie, update database 
     winNewValue.elo = newWinElo;
-    setNewMovie(await props.nextMovie);
+    setNewMovie(nextMovie);
     setOldMovie(winNewValue);
     //updateElo({id : winNewValue._id, elo : newWinElo});
     //updateElo({id : loserInfo._id, elo : newLoseElo});
