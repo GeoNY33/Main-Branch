@@ -4,6 +4,8 @@ const fs = require('fs');
 const path = require('path');
 const bcrypt = require('bcrypt');
 const { AsyncDependenciesBlock } = require('webpack');
+const { brotliDecompress } = require('zlib');
+const { query } = require('express');
 
 
 const controllers = {
@@ -41,6 +43,16 @@ const controllers = {
     db.query(query, values)
       .then(data => {
         res.locals.movie = data.rows[0];
+        return next();
+      })
+  },
+
+  
+  getAllMovies: (req, res, next) => {
+    const query = 'SELECT * FROM movie_app.movies';
+    db.query(query)
+      .then(data => {
+        res.locals.movies = data.rows;
         return next();
       })
   }

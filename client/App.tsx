@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import './stylesheets/styles.css';
 import MainPageContainer from './containers/MainPageContainer';
 
-const App = () => {
+const App = (props:any) => {
 
   return (
     <div>

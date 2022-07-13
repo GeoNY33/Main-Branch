@@ -30,6 +30,7 @@ const MovieCardsContainer =  (props:any) => {
     elo: 0,
     _id: 0
   });
+
   let [oldMovie, setOldMovie] = useState({
     genre: '',
     image: '',
@@ -44,26 +45,33 @@ const MovieCardsContainer =  (props:any) => {
     const oldMovHolder:movieInfo = await getMovie();
     setNewMovie(await newMovHolder);
     setOldMovie(await oldMovHolder);
-    console.log(await oldMovHolder)
-    }
-    test()
+    };
+    test();
   }, []);
 
-  /*
-  const [leftMovie, setMovies] = useState({ 
-    title: newMovie.title,
-    desc: newMovie.desc,
-    elo: newMovie.elo,
-  }
-  );
-  */
+  // helper that checks which image was clicked, then assigns movie on right side as winner and loads 
+  // new movie on left side by updating state of newMovie. Also changes both elo scores
+  const imgClickHelper = async (id: any) =>{   
+    const newMovHolder:Promise<movieInfo> = getMovie();
+    const winnerInfo:movieInfo = (id.target.id === 'imgleft') ? newMovie : oldMovie
+    const loserInfo:movieInfo = (id.target.id !== 'imgleft') ? newMovie : oldMovie
+    
+    const newValue:movieInfo = Object.assign({}, winnerInfo);
+    newValue.elo += 1
+    // update elo w post req for winner
+    // 
+    // update elo w post for loser
+    setNewMovie(await newMovHolder);
+    setOldMovie(newValue);
+  };
+
   return (
     <div id="movieCardsContainer">
       <div id="header1"> Main-Branch </div> 
-      <MovieCard side={'left'} title={newMovie.title} genre={newMovie.genre} 
-      image={newMovie.image} elo={newMovie.elo} id={newMovie._id} setMovie={setNewMovie}/>
+      <MovieCard side={'left'} title={newMovie.title} genre={newMovie.genre}
+      image={newMovie.image} elo={newMovie.elo} id={newMovie._id} helper={imgClickHelper}/>
       <MovieCard side={'right'} title={oldMovie.title} genre={oldMovie.genre} 
-      image={oldMovie.image} elo={oldMovie.elo} id={oldMovie._id} setMovie={setOldMovie}/>
+      image={oldMovie.image} elo={oldMovie.elo} id={oldMovie._id} helper={imgClickHelper}/>
     </div>
   );
 };
