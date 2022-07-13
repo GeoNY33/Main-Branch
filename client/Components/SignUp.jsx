@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 function SignUp() {
     const [usernameInput, setUsernameInput] = useState('');
@@ -9,18 +10,26 @@ function SignUp() {
     const handlePasswordInput = (input) => {
         setPasswordInput(input.target.value);
     }
+    const createUser = () => {
+        console.log(usernameInput, passwordInput);
+        axios.post('/api/newUser', {
+          username: usernameInput,
+          password: passwordInput,
+        }).then((res) => {
+          console.log(res);
+          //window.location.assign('/?');
+        })
+        setUsernameInput('');
+        setPasswordInput('');
+    }
     return (
-      <div >
-        <h1>Sign In</h1>
-        <form  method='GET'>
-          <label for="username">Username: </label>
-          <input type="text" id="username" name="username"></input>
-          <br></br>
-          <label for="password">Password: </label>
-          <input type="text" id="password" name="password"></input>
-          <br></br>
-          <input type="submit" value="Submit"></input>
-        </form>
+      <div className='outerSignUpDiv'>
+        <h1>Sign Up</h1>
+        <div className='innerSignUpDiv'>
+            <input required className="username-input" onChange={handleUsernameInput} value={usernameInput} type="text" placeholder="Username" />
+            <input required className="password-input" onChange={handlePasswordInput} value={passwordInput} type="password" placeholder="Password" />
+            <button className="signup-btn" onClick={createUser}>Enter</button>
+        </div>
       </div>
     );
 }

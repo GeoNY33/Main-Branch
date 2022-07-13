@@ -10,53 +10,27 @@ function Login() {
         setPasswordInput(input.target.value);
     }
     const findUser = () => {
-        // testing input is working
         console.log(usernameInput, passwordInput);
-        // send axios post
-        axios.post('http://localhost:3000/users/signin', {
+        axios.post('api/signIn', {
           username: usernameInput,
           password: passwordInput,
         }).then((res) => {
           console.log(res);
-          if (res.data === 'User Not Found') {
-            // displays error msg if invalid
-            document.querySelector('.error-msg').style.display = 'block';
-          } else {
-            window.location.assign('/home');
-          }
+          //window.location.assign('/?');
         })
-        // clear inputs after button click
         setUsernameInput('');
         setPasswordInput('');
     }
     return (
-      <div >
+      <div className='innerSignInDiv'>
         <h1>Sign In</h1>
-        <form action="/signin" method='GET'>
-          <label for="username">Username: </label>
-          <input type="text" id="username" name="username"></input>
-          <br></br>
-          <label for="password">Password: </label>
-          <input type="text" id="password" name="password"></input>
-          <br></br>
-          <input type="submit" value="Submit"></input>
-        </form>
+        <div className='innerSignInDiv'>
+            <input required className="username-input" onChange={handleUsernameInput} value={usernameInput} type="text" placeholder="Username" />
+            <input required className="password-input" onChange={handlePasswordInput} value={passwordInput} type="password" placeholder="Password" />
+            <button className="signin-btn" onClick={createUser}>Enter</button>
+        </div>
       </div>
     );
 }
-
-// function Example() {
-//     // Declare a new state variable, which we'll call "count"
-//     const [count, setCount] = useState(0);
-  
-//     return (
-//       <div>
-//         <p>You clicked {count} times</p>
-//         <button onClick={() => setCount(count + 1)}>
-//           Click me
-//         </button>
-//       </div>
-//     );
-//   }
 
 export default Login;

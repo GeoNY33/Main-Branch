@@ -38,7 +38,7 @@ const App = () => {
     <div>
       <h1>Movie ELO</h1>
       {/* {allMovies} */}
-      {Display()}
+      {SignUp()}
     </div>
   );
  }

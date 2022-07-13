@@ -20,6 +20,8 @@ app.get('/', (req, res) => {
   return res.status(200).sendFile(path.join(__dirname, '../index.html'));
 });
 
+app.use('/api', apiRouter);
+
 //unknown route handler
 app.use((req, res) => res.status(404).send('page not found'));
 
