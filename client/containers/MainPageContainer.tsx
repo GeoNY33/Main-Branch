@@ -9,10 +9,6 @@ const MainPageContainer = (props:any) => {
     return (
       <div id="MainPage">
         <MovieCardsContainer/>
-<<<<<<< HEAD
-=======
-        <button onClick={() => nav('/display')}>See Results</button>
->>>>>>> dev-branch
       </div>
     );
 };
