@@ -26,7 +26,7 @@ router.put('/updateElo', controllers.updateElo, (req, res) => {
 //auth stuff:
 
 //create new user
-router.post('/newUser', controllers.newUser, (req, res) => {
+router.post('/newUser', controllers.newUser, controllers.setCookie, (req, res) => {
   res.status(200).json(res.locals.userinfo);
 })
 
