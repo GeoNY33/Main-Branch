@@ -18,36 +18,36 @@ interface Elo {
 const options = {method : 'GET', headers: {'Content-Type': 'application/json'}};
 
 const MovieCardsContainer =  (props:any) => {
-  const getMovie = async () => {
+  const getMovie:Function = async () => {
     try{
       const rawRes = await fetch('/api/getRandomMovie', options);
-      const res = await rawRes.json();
+      const res:Promise<movieInfo> = await rawRes.json();
       return await res;
     } catch(err) {console.error("Error requesting new movie: ", err)};
   };
   
-  const updateElo = async (value:Elo) => {
+  const updateElo:Function = async (value:Elo) => {
     try{
       const rawRes = await fetch("api/updateElo", {method : 'Post', body : JSON.stringify(value), headers: {'Content-Type': 'application/json'}});
-      const res = await rawRes.json();
-    } catch(err) {console.error("Error updating elo: ", err)};
+      const res:Promise<Elo> = await rawRes.json();
+    } catch(err:any) {console.error("Error updating elo: ", err)};
   }
 
-  let [newMovie, setNewMovie] = useState({
+  let [newMovie, setNewMovie]: [movieInfo, Function] = useState({
     genre: '',
     image: '',
     title: '',
     elo: 0,
     _id: 0
   });
-  let [nextMovie, setNextMovie] = useState({
+  let [nextMovie, setNextMovie]: [movieInfo, Function] = useState({
     genre: '',
     image: '',
     title: '',
     elo: 0,
     _id: 0
   });  
-  let [oldMovie, setOldMovie] = useState({
+  let [oldMovie, setOldMovie]: [movieInfo, Function] = useState({
     genre: '',
     image: '',
     title: '',
@@ -56,7 +56,7 @@ const MovieCardsContainer =  (props:any) => {
   });
 
   useEffect(() => {
-    const initMovies = async () => {
+    const initMovies:CallableFunction = async () => {
     const newMovHolder:movieInfo = await getMovie();
     let oldMovHolder:movieInfo = await getMovie();
     if (newMovHolder._id === oldMovHolder._id){
@@ -76,12 +76,20 @@ const MovieCardsContainer =  (props:any) => {
   useEffect(() => {
     const updateNextMovie = async () => {
     let nextMovHolder:movieInfo = await getMovie();
+<<<<<<< HEAD
     if (nextMovHolder._id === oldMovie._id || nextMovHolder._id === newMovie._id){
+=======
+    while(nextMovHolder._id === oldMovie._id || nextMovHolder._id === newMovie._id){
+>>>>>>> dev-branch
       nextMovHolder = await getMovie();
     }
     setNextMovie(await nextMovHolder)
   };
+<<<<<<< HEAD
     updateNextMovie()
+=======
+  updateNextMovie();
+>>>>>>> dev-branch
   }, [newMovie]);
 
   // NOTE: possibly try to load image behind image on left 
@@ -98,15 +106,15 @@ const MovieCardsContainer =  (props:any) => {
     let eloWin1  = 10 ** (winNewValue.elo / 400);
     let eloLose1 =  10 ** (loserInfo.elo / 400);
     let eloWin2 = eloWin1 / (eloWin1 + eloLose1);
-    let eloLose2 = eloLose1 / (eloWin1 + eloLose1);
-    let newWinElo = winNewValue.elo + K*(eloWin2 - eloWin1);
-    let newLoseElo = loserInfo.elo + K*(eloLose2 - eloLose1);
+    let eloLose2 = eloLose1 / (eloWin1  + eloLose1);
+    let newWinElo = winNewValue.elo + K * (1 - eloWin2);
+    let newLoseElo = loserInfo.elo + K * (0 - eloLose2);
     // Update winner info, add new movie, update database 
     winNewValue.elo = newWinElo;
     setNewMovie(nextMovie);
     setOldMovie(winNewValue);
-    //updateElo({id : winNewValue._id, elo : newWinElo});
-    //updateElo({id : loserInfo._id, elo : newLoseElo});
+    updateElo({id : winNewValue._id, elo : newWinElo});
+    updateElo({id : loserInfo._id, elo : newLoseElo});
   };
   // helper for movie skip button 
   const exitClickHelper = async (id: any) => {
