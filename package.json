@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/GeoNY33/Main-Branch#readme",
   "dependencies": {
+    "concurrently": "^7.2.2",
     "bcrpyt": "^2.0.0",
     "bcrypt": "^5.0.1",
     "bcryptjs": "^2.4.3",
