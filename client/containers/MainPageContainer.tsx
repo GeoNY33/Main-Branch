@@ -1,13 +1,15 @@
 import React from 'react';
 import { isPropertySignature } from 'typescript';
 import MovieCardsContainer from './MovieCardsContainer';
-import DropDownContainer from './DropDownContainer';
+import { useNavigate } from 'react-router-dom';
 
 const MainPageContainer = (props:any) => {
+  const nav = useNavigate();
+
     return (
       <div id="MainPage">
         <MovieCardsContainer/>
-        <DropDownContainer/>
+        <button onClick={() => nav('/display')}>See Results</button>
       </div>
     );
 };
