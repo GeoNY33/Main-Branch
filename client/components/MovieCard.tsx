@@ -7,16 +7,17 @@ type MovieCardProps = {
   title: string,
   elo: number,
   id: number | string,  
-  helper: Function | null
+  imgHelper: Function | null,
+  exitHelper: Function | null,
 };
 
 const MovieCard = (props : MovieCardProps) => {
   const {side} = props
   return (
     <div id={props.side}>
-      <button className="exitBtn" id={`btn${props.side}`} >X</button>
+      <button className="exitBtn" id={`exit${props.side}`} onClick={(id) => props.exitHelper(id)} >X</button>
       {props.title}
-      <img className="movieImg" src={props.image} id={`img${props.side}`} onClick={(id) => props.helper(id)}></img>
+      <img className="movieImg" src={props.image} id={`img${props.side}`} onClick={(id) => props.imgHelper(id)}></img>
       {props.elo}
     </div>
   );

@@ -13,12 +13,17 @@ router.get('/getRandomMovie', controllers.getRandomMovie, (req, res) => {
   res.status(200).json(res.locals.movie);
 })
 
-//submit change in ELO on selection
-
 //fetch all movies to display ranking
 router.get('/getAllMovies', controllers.getAllMovies, (req, res) => {
   res.status(200).json(res.locals.movies);
 })
+
+//put req, expects movie _id, and updated ELO
+router.put('/updateElo', controllers.updateElo, (req, res) => {
+  res.status(200).json(res.locals.movie);
+})
+
+//auth stuff:
 
 //create new user
 router.post('/newUser', controllers.newUser, (req, res) => {
@@ -27,8 +32,9 @@ router.post('/newUser', controllers.newUser, (req, res) => {
 
 //verify existing user
   //start session
-
-
+router.post('/verifyUser', controllers.verifyUser, controllers.setCookie, (req, res) => {
+  res.status(200).json({'hi': 'hi'});
+})
 
 
 module.exports = router;
