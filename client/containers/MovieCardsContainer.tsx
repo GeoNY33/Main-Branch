@@ -76,20 +76,12 @@ const MovieCardsContainer =  (props:any) => {
   useEffect(() => {
     const updateNextMovie = async () => {
     let nextMovHolder:movieInfo = await getMovie();
-<<<<<<< HEAD
-    if (nextMovHolder._id === oldMovie._id || nextMovHolder._id === newMovie._id){
-=======
     while(nextMovHolder._id === oldMovie._id || nextMovHolder._id === newMovie._id){
->>>>>>> dev-branch
       nextMovHolder = await getMovie();
     }
     setNextMovie(await nextMovHolder)
   };
-<<<<<<< HEAD
-    updateNextMovie()
-=======
   updateNextMovie();
->>>>>>> dev-branch
   }, [newMovie]);
 
   // NOTE: possibly try to load image behind image on left 
