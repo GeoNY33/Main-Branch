@@ -12,7 +12,7 @@ const DisplayContainer = (props) => {
       let results = await axios.get('/api/getAllMovies')
       const resArr = [];
       results = await results.data
-      const sortedRes = results.sort((a , b)=> b.elo - a.elo )
+      const sortedRes = await results.sort((a , b)=> b.elo - a.elo)
       for (let i = 0; i < sortedRes.length; i++) {
         resArr.push(<div key = {i} classname = 'movieItem'>{i+1}.{await sortedRes[i].title}</div>);
       }
